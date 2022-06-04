@@ -107,16 +107,20 @@ function bestYearAvg(movies) {
         scoresByYear[movie.year][0] / scoresByYear[movie.year][1];
     }
   });
-  let earlyBestYear;
-  let bestAverageRate;
+ 
+let copiedScoresByYear=JSON.parse(JSON.stringify(scoresByYear))
 
-  for (let year in scoresByYear) {
-    if (scoresByYear[year][2] > bestAverageRate) {
-      bestAverageRate = scoresByYear[year][2];
+
+let earlyBestYear;
+let bestAverageRate=0;
+
+  for (let year in copiedScoresByYear) {
+    if (copiedScoresByYear[year][2] > bestAverageRate) {
+      bestAverageRate = copiedScoresByYear[year][2];
       earlyBestYear = year;
     } else {
-      if (scoresByYear[year][2] === bestAverageRate) {
-        if (year < earlyBestYear) earlyBestYear = year;
+      if (copiedScoresByYear[year][2] === bestAverageRate) {
+        if (year < earlyBestYear) {earlyBestYear = year};
       }
     }
   }
