@@ -66,14 +66,38 @@ function orderAlphabetically(movies) {
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(movies) {
-  let minutes =movies.map(movie=>{return {...movie,duration: movies.duration})
+  let minutes =movies.map(movie=>{return })
 
   return minutes
 }
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
 function bestYearAvg(movies) {
+  if (!movies.length){return null}
+  
+  let moviesByYear={}
 
+    movies.forEach((movie=>
+     {if(!moviesByYear[movie.year]){
+       moviesByYear[movie.year]=[movie]}
+       else {moviesByYear[movie.year].push(movie)}
+    } ));
+
+    let bestAverageRate;
+    let earlyBestYear;
+
+    for (let year in moviesByYear)
+    {if(moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length>bestAverageRate)
+      {bestAverageRate=moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length;
+      earlyBestYear=year}
+      else if(bestAverageRate===moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length)
+      if(year<earlyBestYear)earlyBestYear=year}
+
+  
+
+
+
+return `The best year was ${earlyBestYear} with an average score of ${bestAverageRate}`
 }
 
 
