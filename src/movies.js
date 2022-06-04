@@ -65,39 +65,63 @@ function orderAlphabetically(movies) {
 }
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
-function turnHoursToMinutes(movies) {
-  let minutes =movies.map(movie=>{return })
 
-  return minutes
-}
+function turnHoursToMinutes(movies) {
+  
+  function turnTimeToMinutes(timeInStrings) {
+    let Minutes
+    if (!timeInStrings.includes("min"))
+    {Minutes=Number(timeInStrings.replace("h",""))*60}
+    else{let onlyNumbers=timeInStrings.replace("h","").replace("min","").
+    split(" ");
+  Minutes=Number(onlyNumbers[0])*60+Number(onlyNumbers[1])}
+
+    
+    return Minutes
+  }
+let newArray = movies.map((movie)=>{
+  let copiedMovie = JSON.parse(JSON.stringify(movie));
+  copiedMovie.duration=turnTimeToMinutes(copiedMovie.duration);
+  return copiedMovie
+})
+
+  return newArray}  
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
 function bestYearAvg(movies) {
-  if (!movies.length){return null}
-  
-  let moviesByYear={}
+  if (!movies.length) {
+    return null;
+  }
+  let scoresByYear = {};
+  movies.forEach((movie) => {
+    // I build an object being
+    //scoresByYear{year{[totalScores][number of movies][AverageScore]}}
+    if (!scoresByYear[movie.year]) {
+      scoresByYear[movie.year] = [movie.score];
+      scoresByYear[movie.year][1] = 1;
+      scoresByYear[movie.year][2] = scoresByYear[movie.year][0];
+    } else {
+      scoresByYear[movie.year][1]++;
+      scoresByYear[movie.year][0] += movie.score;
+      scoresByYear[movie.year][2] =
+        scoresByYear[movie.year][0] / scoresByYear[movie.year][1];
+    }
+  });
+  let earlyBestYear;
+  let bestAverageRate;
 
-    movies.forEach((movie=>
-     {if(!moviesByYear[movie.year]){
-       moviesByYear[movie.year]=[movie]}
-       else {moviesByYear[movie.year].push(movie)}
-    } ));
+  for (let year in scoresByYear) {
+    if (scoresByYear[year][2] > bestAverageRate) {
+      bestAverageRate = scoresByYear[year][2];
+      earlyBestYear = year;
+    } else {
+      if (scoresByYear[year][2] === bestAverageRate) {
+        if (year < earlyBestYear) earlyBestYear = year;
+      }
+    }
+  }
 
-    let bestAverageRate;
-    let earlyBestYear;
-
-    for (let year in moviesByYear)
-    {if(moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length>bestAverageRate)
-      {bestAverageRate=moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length;
-      earlyBestYear=year}
-      else if(bestAverageRate===moviesByYear[year].reduce((acc,score)=>{return acc+score},0)/moviesByYear[year].length)
-      if(year<earlyBestYear)earlyBestYear=year}
-
-  
-
-
-
-return `The best year was ${earlyBestYear} with an average score of ${bestAverageRate}`
+  return `The best year was ${earlyBestYear} with an average score of ${bestAverageRate}`;
 }
 
 
